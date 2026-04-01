@@ -53,23 +53,6 @@ class AuthController
             ],
         ]);
 
-        // if (!Auth::attempt($request->validated())) {
-        //     return response()->json([
-        //         'message' => 'Invalid credentials'
-        //     ], 401);
-        // }
-
-        // $user = Auth::user();
-
-        // // Optional: delete old tokens (recommended for mobile apps)
-        // // $user->tokens()->delete();
-
-        // $token = $user->createToken('auth_token')->plainTextToken;
-
-        // return response()->json([
-        //     'user' => new UserResource($user),
-        //     'token' => $token,
-        // ]);
     }
 
     public function user(Request $request)
