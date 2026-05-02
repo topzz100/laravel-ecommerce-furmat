@@ -26,12 +26,24 @@ class Product extends Model
         static::creating(function ($product) {
             $product->slug = self::generateUniqueSlug($product->name);
         });
+          static::updating(function ($product) {
+            if ($product->isDirty('name')) {
+                $product->slug = self::generateUniqueSlug($product->name, $product->id);
+            }
+        });
     }
 
-    public static function generateUniqueSlug($name)
+      protected static function generateUniqueSlug($name, $ignoreId = null)
     {
         $slug = Str::slug($name);
-        $count = Product::where('slug', 'LIKE', "{$slug}%")->count();
+
+        $query = self::where('slug', 'LIKE', "{$slug}%");
+
+        if ($ignoreId) {
+            $query->where('id', '!=', $ignoreId);
+        }
+
+        $count = $query->count();
 
         return $count ? "{$slug}-{$count}" : $slug;
     }
