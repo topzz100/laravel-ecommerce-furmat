@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AddressController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -52,5 +55,26 @@ Route::prefix('v1')->group(function () {
             Route::put('/{id}', [ProductController::class, 'update']);
             Route::delete('/{id}', [ProductController::class, 'destroy']);
         });
+    });
+    Route::middleware('auth:sanctum')->group(function () {
+
+        // cart
+        Route::post('/cart', [CartController::class, 'addToCart']);
+        Route::get('/cart', [CartController::class, 'getCart']);
+        Route::delete('/cart/{id}', [CartController::class, 'removeItem']);
+
+        // order
+        Route::post('/checkout', [OrderController::class, 'checkout']);
+        Route::get('/orders', [OrderController::class, 'index']);
+    });
+
+    Route::middleware('auth:sanctum')->group(function () {
+
+        Route::apiResource('addresses', AddressController::class);
+
+        Route::patch(
+            'addresses/{address}/default',
+            [AddressController::class, 'setDefault']
+        );
     });
 });

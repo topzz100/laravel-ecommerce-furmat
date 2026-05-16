@@ -31,7 +31,11 @@ class ProductController
             ->latest()
             ->paginate(10);
 
-        return ProductResource::collection($products);
+          return response()->json([
+            'success' => true,
+            'message' => 'Products retrieved successfully',
+            'data' => ProductResource::collection($products),
+        ]);
     }
 
     public function show($id)

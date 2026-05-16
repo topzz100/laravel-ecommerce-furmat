@@ -36,9 +36,7 @@ class CategoryController
     public function update(StoreCategoryRequest $request, $id)
     {
         $category = Category::findOrFail($id);
-
         $category->update($request->validated());
-
         return response()->json([
             'data' => new CategoryResource($category)
         ]);

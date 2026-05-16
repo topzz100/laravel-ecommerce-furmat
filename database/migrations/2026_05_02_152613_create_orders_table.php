@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-
-            $table->decimal('total_amount', 12, 2);
             $table->string('status')->default('pending'); // pending, paid, shipped
+            $table->decimal('total_amount', 12, 2);
+            $table->string('delivery_address');
+            $table->string('phone');
+            $table->string('payment_method');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

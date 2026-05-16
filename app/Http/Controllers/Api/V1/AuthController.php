@@ -35,8 +35,16 @@ class AuthController
 
         $user = User::where('email', $data['email'])->first();
 
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
 
-        if (!$user || !Hash::check($data['password'], $user->password)) {
+        // if (!Hash::check(...)) {
+        //     return response()->json(['message' => 'Wrong password'], 401);
+        // }
+
+
+        if (!Hash::check($data['password'], $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
@@ -52,24 +60,6 @@ class AuthController
                 'token' => $token,
             ],
         ]);
-
-        // if (!Auth::attempt($request->validated())) {
-        //     return response()->json([
-        //         'message' => 'Invalid credentials'
-        //     ], 401);
-        // }
-
-        // $user = Auth::user();
-
-        // // Optional: delete old tokens (recommended for mobile apps)
-        // // $user->tokens()->delete();
-
-        // $token = $user->createToken('auth_token')->plainTextToken;
-
-        // return response()->json([
-        //     'user' => new UserResource($user),
-        //     'token' => $token,
-        // ]);
     }
 
     public function user(Request $request)
